@@ -1,12 +1,53 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime JS
+
+@code {
+    @*
+        https://docs.microsoft.com/pt-br/aspnet/core/blazor/javascript-interoperability/call-dotnet-from-javascript?view=aspnetcore-6.0
+    *@
+
+    [JSInvokable]
+    public static async Task<int> MyDotnetFuncAsync()
+    {
+        Console.WriteLine("chamou MyDotnetFuncAsync, aguardando 2s");
+        await Task.Delay(2000);
+        Console.WriteLine("chamou MyDotnetFuncAsync ok");
+        return 5;
+    }
+
+    [JSInvokable]
+    public static int MyDotnetFunc2()
+    {
+        Console.WriteLine("chamou MyDotnetFunc2");
+        return 4;
+    }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("OnInitialized");
+        CallJsRazorStarted();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        Console.WriteLine($"firstRender={firstRender}");
+        if (firstRender)
+        {
+            @* await JS.InvokeVoidAsync(
+                "setElementText1", divElement, "Text after render"); *@
+        }
+        else { }
+
+        return Task.CompletedTask;
+    }
+
+    private void CallJsRazorStarted()
+    {
+        @*
+            https://docs.microsoft.com/pt-br/aspnet/core/blazor/javascript-interoperability/call-javascript-from-dotnet?view=aspnetcore-6.0
+            jsInProcess: Interoperabilidade síncrona JS em Blazor WebAssembly
+        *@
+        var jsInProcess = (IJSInProcessRuntime)JS;
+        jsInProcess.InvokeVoid("__BlazorWasmJsLibStarted");
+    }
+}
