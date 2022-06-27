@@ -4,7 +4,7 @@ using BlazorWasmJsLib;
 using BlazorWasmJsLib.Core;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<App>("#blazorwasmjslib-app");
 // builder.RootComponents.Add<HeadOutlet>("head::after");
 
 // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/configuration?view=aspnetcore-6.0
