@@ -12,8 +12,11 @@ builder.RootComponents.Add<App>("#app");
 Console.WriteLine("Program.cs:");
 Console.WriteLine("\tbuilder.HostEnvironment.BaseAddress={0}", builder.HostEnvironment.BaseAddress);
 Console.WriteLine("\tbuilder.HostEnvironment.Environment={0}", builder.HostEnvironment.Environment);
+Console.WriteLine("\tMySection={0}", builder.Configuration.GetSection("MySection").GetValue<string>("MyKey"));
 
 
+// As instacias são singleton
+// https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/dependency-injection?view=aspnetcore-6.0#service-lifetime
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 // builder.Services.AddSingleton<DemoService>();
 builder.Services.AddScoped<DemoService>();

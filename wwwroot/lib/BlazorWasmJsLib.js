@@ -3,6 +3,17 @@ class BlazorWasmJsLib {
 
   constructor() {
     console.debug(`%cBlazorWasmJsLib%c Iniciando...\n%cCarregando lib.`, "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;", "font-weight: normal;");
+    // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/configuration?view=aspnetcore-6.0
+    // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/environments?view=aspnetcore-6.0#set-the-environment-via-startup-configuration
+    // if (window.location.hostname.includes("localhost")) {
+    //   Blazor.start({
+    //     environment: "Staging"
+    //   });
+    // } else {
+    //   Blazor.start({
+    //     environment: "Production"
+    //   });
+    // }
   }
 
   _blazorStarted(dotNetHelper) {
