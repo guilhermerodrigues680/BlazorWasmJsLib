@@ -1,8 +1,15 @@
 class BlazorWasmJsLib {
+  _isBlazorStarted;
   _dotNetHelper;
+  _blazorStartedProm;
+  _resolveBlazorStartedProm;
 
   constructor() {
     console.debug(`%cBlazorWasmJsLib%c Iniciando...\n%cCarregando lib.`, "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;", "font-weight: normal;");
+    this._isBlazorStarted = false;
+    this._blazorStartedProm = new Promise(resolve => {
+      this._resolveBlazorStartedProm = resolve;
+    });
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/configuration?view=aspnetcore-6.0
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/environments?view=aspnetcore-6.0#set-the-environment-via-startup-configuration
     // if (window.location.hostname.includes("localhost")) {
@@ -17,10 +24,16 @@ class BlazorWasmJsLib {
   }
 
   _blazorStarted(dotNetHelper) {
-    console.debug("%cBlazorWasmJsLib%c Carregado", "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;");
+    this._isBlazorStarted = true;
     this._dotNetHelper = dotNetHelper;
-    console.debug("dotNetHelper", dotNetHelper);
-    console.debug("this._dotNetHelper", this._dotNetHelper);
+    this._resolveBlazorStartedProm();
+    console.debug("%cBlazorWasmJsLib%c Carregado", "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;");
+  }
+
+  async waitBlazorWasmJsLibInit() {
+    console.debug("_blazorStartedProm iniciado");
+    await this._blazorStartedProm;
+    console.debug("_blazorStartedProm finalizado");
   }
 
   async runLibMethod() {
@@ -33,7 +46,10 @@ class BlazorWasmJsLib {
   }
 
   async getWeather() {
-    console.debug("getWeather", this._dotNetHelper);
+    if (!this._isBlazorStarted) {
+      throw new Error("blazor não iniciado");
+    }
+
     const res = await this._dotNetHelper.invokeMethodAsync("GetWeather");
     console.log("res", res)
   }
@@ -43,3 +59,8 @@ class BlazorWasmJsLib {
 let blazorWasmJsLibInstance = new BlazorWasmJsLib();
 window.blazorWasmJsLibInstance = blazorWasmJsLibInstance;
 window.__BlazorWasmJsLibStarted = blazorWasmJsLibInstance._blazorStarted.bind(blazorWasmJsLibInstance);
+
+// Exemplo
+// ; (async () => {
+//   await blazorWasmJsLibInstance.waitBlazorWasmJsLibInit();
+// })();
