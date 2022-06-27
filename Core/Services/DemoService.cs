@@ -1,8 +1,30 @@
-namespace BlazorWasmJsLib.Core.Services;
+using System.Net.Http.Json;
+
+namespace BlazorWasmJsLib.Core;
 
 public class DemoService
 {
+    private readonly ILogger _logger;
+    private readonly HttpClient _httpClient;
 
+    public DemoService(ILogger<DemoService> logger, HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+        _logger = logger;
+        _logger.LogDebug("DemoService construido.");
+    }
+
+    public async Task<WeatherForecast[]?> GetWeather()
+    {
+        var forecasts = await _httpClient.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        if (forecasts is not null)
+            foreach (var f in forecasts)
+                _logger.LogDebug(f?.ToString());
+        else
+            _logger.LogDebug("forecasts is null");
+
+        return forecasts;
+    }
 }
 
 // @page "/fetchdata"
@@ -48,17 +70,8 @@ public class DemoService
 
 //     protected override async Task OnInitializedAsync()
 //     {
-//         forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+//         
 //     }
 
-//     public class WeatherForecast
-//     {
-//         public DateTime Date { get; set; }
 
-//         public int TemperatureC { get; set; }
-
-//         public string? Summary { get; set; }
-
-//         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-//     }
 // }

@@ -1,43 +1,24 @@
 ﻿@using Microsoft.JSInterop
+@using BlazorWasmJsLib.Core
 @inject IJSRuntime JS
+@inject ILogger<App> _logger
+@inject DemoService _service;
+
+BlazorWasmJsLib - App Carregado
 
 @code {
-    @*
-        https://docs.microsoft.com/pt-br/aspnet/core/blazor/javascript-interoperability/call-dotnet-from-javascript?view=aspnetcore-6.0
-    *@
-
-    [JSInvokable]
-    public static async Task<int> MyDotnetFuncAsync()
-    {
-        Console.WriteLine("chamou MyDotnetFuncAsync, aguardando 2s");
-        await Task.Delay(2000);
-        Console.WriteLine("chamou MyDotnetFuncAsync ok");
-        return 5;
-    }
-
-    [JSInvokable]
-    public static int MyDotnetFunc2()
-    {
-        Console.WriteLine("chamou MyDotnetFunc2");
-        return 4;
-    }
+    private DotNetObjectReference<App>? _objRef;
 
     protected override void OnInitialized()
     {
-        Console.WriteLine("OnInitialized");
+        _logger.LogDebug("OnInitialized");
+        _objRef = DotNetObjectReference.Create(this);
         CallJsRazorStarted();
     }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        Console.WriteLine($"firstRender={firstRender}");
-        if (firstRender)
-        {
-            @* await JS.InvokeVoidAsync(
-                "setElementText1", divElement, "Text after render"); *@
-        }
-        else { }
-
+        _logger.LogDebug($"OnAfterRenderAsync firstRender={firstRender}");
         return Task.CompletedTask;
     }
 
@@ -48,6 +29,25 @@
             jsInProcess: Interoperabilidade síncrona JS em Blazor WebAssembly
         *@
         var jsInProcess = (IJSInProcessRuntime)JS;
-        jsInProcess.InvokeVoid("__BlazorWasmJsLibStarted");
+        jsInProcess.InvokeVoid("__BlazorWasmJsLibStarted", _objRef);
     }
+
+    [JSInvokable]
+    public async Task<int> MyDotnetFuncAsync()
+    {
+        _logger.LogInformation("chamou MyDotnetFuncAsync, aguardando 2s");
+        await Task.Delay(2000);
+        _logger.LogInformation("chamou MyDotnetFuncAsync ok");
+        return 5;
+    }
+
+    [JSInvokable]
+    public int MyDotnetFunc2()
+    {
+        _logger.LogInformation("chamou MyDotnetFunc2");
+        return 4;
+    }
+
+    [JSInvokable]
+    public Task<WeatherForecast[]?> GetWeather() => _service.GetWeather();
 }
