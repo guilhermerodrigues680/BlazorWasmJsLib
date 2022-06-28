@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWasmJsLib", "src\Blaz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWasmJsLib.Lib", "src\BlazorWasmJsLib.Lib\BlazorWasmJsLib.Lib.csproj", "{E8F0F565-81DF-47D3-BE1E-F0AA23BAFC91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComponentLibrary", "src\ComponentLibrary\ComponentLibrary.csproj", "{D4BEC200-223C-4761-AE81-9FD2A3BA5E54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +28,14 @@ Global
 		{E8F0F565-81DF-47D3-BE1E-F0AA23BAFC91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8F0F565-81DF-47D3-BE1E-F0AA23BAFC91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8F0F565-81DF-47D3-BE1E-F0AA23BAFC91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4BEC200-223C-4761-AE81-9FD2A3BA5E54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4BEC200-223C-4761-AE81-9FD2A3BA5E54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4BEC200-223C-4761-AE81-9FD2A3BA5E54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4BEC200-223C-4761-AE81-9FD2A3BA5E54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C8B58CBB-EEA1-4496-AB1C-9F1DFB0952A8} = {27EB5B67-EAFF-4451-8F05-BC830299F4FC}
 		{E8F0F565-81DF-47D3-BE1E-F0AA23BAFC91} = {27EB5B67-EAFF-4451-8F05-BC830299F4FC}
+		{D4BEC200-223C-4761-AE81-9FD2A3BA5E54} = {27EB5B67-EAFF-4451-8F05-BC830299F4FC}
 	EndGlobalSection
 EndGlobal
