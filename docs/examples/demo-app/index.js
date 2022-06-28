@@ -1,6 +1,14 @@
 /** @type {HTMLDivElement} */
 const outputEl = document.querySelector("#output");
 
+// CDN não funciona ainda, devido:
+// Request header field custom-header is not allowed
+// by Access-Control-Allow-Headers in preflight response.
+// https://cdn.statically.io/gh/:user/:repo/:tag/:file
+// https://raw.githack.com/guilhermerodrigues680/BlazorWasmJsLib/develop/dist
+// https://cdn.jsdelivr.net/gh/guilhermerodrigues680/BlazorWasmJsLib@develop/dist
+const blazorWasmJsLibInstance = new BlazorWasmJsLib("blazorwasmjslib");
+
 document.querySelector("#btn-runlibmethod").addEventListener("click", async () => {
     console.log("running runLibMethod");
     outputEl.innerText = "running runLibMethod";

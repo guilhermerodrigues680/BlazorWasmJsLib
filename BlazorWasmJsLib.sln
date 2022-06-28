@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWasmJsLib.Api", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWasmJsLib.Core", "src\BlazorWasmJsLib.Core\BlazorWasmJsLib.Core.csproj", "{3D2FFDC3-4D13-46B5-A3F4-08276B9329E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWasmJsLib.JsInterop", "src\BlazorWasmJsLib.JsInterop\BlazorWasmJsLib.JsInterop.csproj", "{022AC3DE-38D5-4901-BBB9-EB6E36FBDDBE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,14 +26,9 @@ Global
 		{3D2FFDC3-4D13-46B5-A3F4-08276B9329E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D2FFDC3-4D13-46B5-A3F4-08276B9329E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D2FFDC3-4D13-46B5-A3F4-08276B9329E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{022AC3DE-38D5-4901-BBB9-EB6E36FBDDBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{022AC3DE-38D5-4901-BBB9-EB6E36FBDDBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{022AC3DE-38D5-4901-BBB9-EB6E36FBDDBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{022AC3DE-38D5-4901-BBB9-EB6E36FBDDBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C0BCECE1-EA5D-4DB0-B899-85F9EEDC997C} = {8C1C589A-F471-4265-AC7B-EF3496399495}
 		{3D2FFDC3-4D13-46B5-A3F4-08276B9329E5} = {8C1C589A-F471-4265-AC7B-EF3496399495}
-		{022AC3DE-38D5-4901-BBB9-EB6E36FBDDBE} = {8C1C589A-F471-4265-AC7B-EF3496399495}
 	EndGlobalSection
 EndGlobal
