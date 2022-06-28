@@ -10,9 +10,16 @@ dotnet publish -c Release -o Release
 
 dotnet watch --project src/BlazorWasmJsLib.Core
 
-rm -rf Release dist && dotnet publish -c Release -o Release && mv Release/wwwroot dist && rm -rf Release
-
 rm -rf Release docs && dotnet publish -c Release -o Release && mv Release/wwwroot docs && rm -rf Release
+
+## build da solução
+
+```sh
+rm -rf Release dist && \
+    dotnet publish -c Release -o Release && \
+    mv Release/wwwroot dist && \
+    rm -rf Release
+```
 
 ### Bypassing Jekyll on GitHub Pages
 
