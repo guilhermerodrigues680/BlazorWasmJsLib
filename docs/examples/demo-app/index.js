@@ -31,3 +31,12 @@ document.querySelector("#btn-getweather").addEventListener("click", async () => 
     }
 })
 
+async function waitBlazorWasmJsLibInit() {
+    const startTime = new Date();
+    outputEl.innerText = "BlazorWasmJsLib Iniciando..."
+    await blazorWasmJsLibInstance.waitBlazorWasmJsLibInit();
+    const timeDiff = new Date() - startTime; //in ms
+    outputEl.innerText = `BlazorWasmJsLib Carregado. ${timeDiff}ms`
+}
+
+waitBlazorWasmJsLibInit();
