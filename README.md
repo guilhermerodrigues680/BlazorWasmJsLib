@@ -24,3 +24,8 @@ rm -rf Release dist && \
 ### Bypassing Jekyll on GitHub Pages
 
 https://github.blog/2009-12-29-bypassing-jekyll-on-github-pages/
+
+
+### GitHub Pages
+
+https://docs.microsoft.com/pt-br/aspnet/core/blazor/host-and-deploy/webassembly?view=aspnetcore-6.0#github-pages
