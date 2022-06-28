@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/BlazorWasmJsLib.csproj",
+                "${workspaceFolder}/src/BlazorWasmJsLib.Core/BlazorWasmJsLib.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/BlazorWasmJsLib.csproj",
+                "${workspaceFolder}/src/BlazorWasmJsLib.Core/BlazorWasmJsLib.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/BlazorWasmJsLib.csproj"
+                "${workspaceFolder}/src/BlazorWasmJsLib.Core/BlazorWasmJsLib.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

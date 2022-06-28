@@ -1,3 +1,5 @@
+using System;
+
 namespace BlazorWasmJsLib.Core;
 
 public class WeatherForecast
