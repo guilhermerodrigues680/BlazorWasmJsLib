@@ -1,6 +1,12 @@
 /** @type {HTMLDivElement} */
 const outputEl = document.querySelector("#output");
 
+// https://cdn.statically.io/gh/:user/:repo/:tag/:file
+// https://raw.githack.com/guilhermerodrigues680/BlazorWasmJsLib/develop/dist
+// window.BLAZOR_WASM_JS_LIB_BASE_URL = "https://raw.githack.com/guilhermerodrigues680/BlazorWasmJsLib/develop/dist"
+// window.BLAZOR_WASM_JS_LIB_BASE_URL = "blazorwasmjslib"
+const blazorWasmJsLibInstance = new BlazorWasmJsLib("blazorwasmjslib");
+
 document.querySelector("#btn-runlibmethod").addEventListener("click", async () => {
     console.log("running runLibMethod");
     outputEl.innerText = "running runLibMethod";
@@ -38,5 +44,7 @@ async function waitBlazorWasmJsLibInit() {
     const timeDiff = new Date() - startTime; //in ms
     outputEl.innerText = `BlazorWasmJsLib Carregado. ${timeDiff}ms`
 }
+
+
 
 waitBlazorWasmJsLibInit();
