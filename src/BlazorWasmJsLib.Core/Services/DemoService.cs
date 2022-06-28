@@ -1,5 +1,6 @@
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
@@ -9,11 +10,13 @@ public class DemoService
 {
     private readonly ILogger _logger;
     private readonly HttpClient _httpClient;
+    private readonly IImageRepository _imageRepo;
 
-    public DemoService(ILogger<DemoService> logger, HttpClient httpClient)
+    public DemoService(ILogger<DemoService> logger, HttpClient httpClient, IImageRepository imageRepo)
     {
-        _httpClient = httpClient;
         _logger = logger;
+        _httpClient = httpClient;
+        _imageRepo = imageRepo;
         _logger.LogDebug("DemoService construido.");
     }
 
@@ -27,6 +30,41 @@ public class DemoService
             _logger.LogDebug("forecasts is null");
 
         return forecasts;
+    }
+
+    public async Task DoDownloadImage()
+    {
+        _logger.LogInformation("invocado DoDownloadImage");
+        await DemoStr();
+        await DemoByte();
+    }
+
+    private async Task DemoStr()
+    {
+        // Isso não funciona pois o encoding tranforma os bytes
+        // observe diferenca do contentLength com bytes len
+        var imgStr = await _imageRepo.DownloadPhotoStr(640, 360, "fff", "aaa");
+        // var imgContent = await _imageRepo.DownloadPhotoStr(640, 360, "fff", "aaa");
+        // var contentLength = imgContent.Headers.GetValues("Content-Length");
+        // var imgStr = await imgContent.ReadAsStringAsync();
+        var bytes = Encoding.ASCII.GetBytes(imgStr);
+        // _logger.LogDebug("contentLength: {contentLength} , bytesLength: {bytesLength}", contentLength, bytes.Length);
+        _logger.LogDebug("bytesLength: {bytesLength}", bytes.Length);
+    }
+
+    private async Task DemoByte()
+    {
+        // Isso funciona pois não há encoding, a leitura de bytes é direta
+        var imgContent = await _imageRepo.DownloadPhoto(640, 360, "fff", "aaa");
+        var contentLength = imgContent.Headers.GetValues("Content-Length");
+        var imgBytes = await imgContent.ReadAsByteArrayAsync();
+        string imgB64 = System.Convert.ToBase64String(imgBytes);
+        _logger.LogDebug(
+            "contentLength: {contentLength} , imgBytesLength: {imgBytesLength}",
+            contentLength,
+            imgBytes.Length);
+        // esperado imgB64 -> iV...
+        // para ver no browser imgB64 usar: data:image/png;base64,iV....
     }
 }
 

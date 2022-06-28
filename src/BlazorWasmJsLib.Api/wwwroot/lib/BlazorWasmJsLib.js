@@ -71,6 +71,16 @@ class BlazorWasmJsLib {
     console.log("res", res)
     return res;
   }
+
+  async doDownloadImage() {
+    if (!this._isBlazorStarted) {
+      throw new Error("blazor não iniciado");
+    }
+
+    const res = await this._dotNetHelper.invokeMethodAsync("DoDownloadImage");
+    console.log("res", res)
+    return res;
+  }
 }
 
 // Adiciona ela no window

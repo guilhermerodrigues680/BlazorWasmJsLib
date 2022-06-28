@@ -70,4 +70,7 @@ public class LibJsInterop : IAsyncDisposable
 
     [JSInvokable]
     public Task<WeatherForecast[]?> GetWeather() => _service.GetWeather();
+
+    [JSInvokable]
+    public Task DoDownloadImage() => _service.DoDownloadImage();
 }

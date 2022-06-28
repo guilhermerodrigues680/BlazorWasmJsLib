@@ -1,5 +1,6 @@
 // using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Refit;
 using BlazorWasmJsLib.Api;
 using BlazorWasmJsLib.Core;
 
@@ -21,10 +22,17 @@ builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(build
 builder.Services.AddSingleton<DemoService>();
 builder.Services.AddSingleton<LibJsInterop>();
 
+// Refit
+builder.Services.AddRefitClient<IImageRepository>().ConfigureHttpClient(c =>
+{
+    c.BaseAddress = new Uri("https://dummyimage.com/");
+});
+
 // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/logging?view=aspnetcore-6.0#configuration
 builder.Logging.SetMinimumLevel(LogLevel.Trace);
 // builder.Logging.AddFilter("Microsoft.AspNetCore.Components.RenderTree.*", LogLevel.None);
 // builder.Logging.AddFilter("Microsoft.AspNetCore.Components.Routing.Router", LogLevel.None);
+builder.Logging.AddFilter("System.Net.Http.HttpClient.Refit.*", LogLevel.None);
 
 var host = builder.Build();
 
