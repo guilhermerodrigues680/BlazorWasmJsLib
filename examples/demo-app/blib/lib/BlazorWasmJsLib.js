@@ -10,17 +10,17 @@ class BlazorWasmJsLib {
     this._blazorStartedProm = new Promise(resolve => {
       this._resolveBlazorStartedProm = resolve;
     });
+
+    // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/startup?view=aspnetcore-6.0#load-boot-resources
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/configuration?view=aspnetcore-6.0
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/environments?view=aspnetcore-6.0#set-the-environment-via-startup-configuration
-    // if (window.location.hostname.includes("localhost")) {
-    //   Blazor.start({
-    //     environment: "Staging"
-    //   });
-    // } else {
-    //   Blazor.start({
-    //     environment: "Production"
-    //   });
-    // }
+    Blazor.start({
+      environment: "Production", // window.location.hostname.includes("localhost")
+      loadBootResource: function (type, name, defaultUri, integrity) {
+        console.debug(`Loading: '${type}', '${name}', '${defaultUri}'`);
+        return `blib/_framework/${name}`;
+      }
+    }).then((a, b, c) => console.debug("Blazor started", a, b, c))
   }
 
   _blazorStarted(dotNetHelper) {
