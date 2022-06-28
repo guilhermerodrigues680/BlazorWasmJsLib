@@ -14,13 +14,23 @@ class BlazorWasmJsLib {
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/startup?view=aspnetcore-6.0#load-boot-resources
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/configuration?view=aspnetcore-6.0
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/environments?view=aspnetcore-6.0#set-the-environment-via-startup-configuration
+    console.debug("beforeStart");
+    console.time("blazor start time");
     Blazor.start({
-      environment: "Production", // window.location.hostname.includes("localhost")
+      // environment: "Staging",
+      // environment: "Development", // window.location.hostname.includes("localhost")
+      // environment: "Production",
       loadBootResource: function (type, name, defaultUri, integrity) {
         console.debug(`Loading: '${type}', '${name}', '${defaultUri}'`);
-        return `blib/_framework/${name}`;
+        return `blazorwasmjslib/_framework/${name}`;
+        // return `blib/_framework/${name}`;
+        // return defaultUri;
       }
-    }).then((a, b, c) => console.debug("Blazor started", a, b, c))
+    })
+      .then(() => {
+        console.timeEnd("blazor start time");
+        console.debug("afterStarted, blazor:", Blazor);
+      })
   }
 
   _blazorStarted(dotNetHelper) {
@@ -52,6 +62,7 @@ class BlazorWasmJsLib {
 
     const res = await this._dotNetHelper.invokeMethodAsync("GetWeather");
     console.log("res", res)
+    return res;
   }
 }
 
@@ -59,6 +70,8 @@ class BlazorWasmJsLib {
 let blazorWasmJsLibInstance = new BlazorWasmJsLib();
 window.blazorWasmJsLibInstance = blazorWasmJsLibInstance;
 window.__BlazorWasmJsLibStarted = blazorWasmJsLibInstance._blazorStarted.bind(blazorWasmJsLibInstance);
+
+console.debug("me", document.currentScript)
 
 // Exemplo
 // ; (async () => {

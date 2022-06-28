@@ -61,6 +61,7 @@ class BlazorWasmJsLib {
 
     const res = await this._dotNetHelper.invokeMethodAsync("GetWeather");
     console.log("res", res)
+    return res;
   }
 }
 
@@ -68,6 +69,8 @@ class BlazorWasmJsLib {
 let blazorWasmJsLibInstance = new BlazorWasmJsLib();
 window.blazorWasmJsLibInstance = blazorWasmJsLibInstance;
 window.__BlazorWasmJsLibStarted = blazorWasmJsLibInstance._blazorStarted.bind(blazorWasmJsLibInstance);
+
+console.debug("me", document.currentScript)
 
 // Exemplo
 // ; (async () => {

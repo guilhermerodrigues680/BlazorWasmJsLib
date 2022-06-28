@@ -1,0 +1,33 @@
+/** @type {HTMLDivElement} */
+const outputEl = document.querySelector("#output");
+
+document.querySelector("#btn-runlibmethod").addEventListener("click", async () => {
+    console.log("running runLibMethod");
+    outputEl.innerText = "running runLibMethod";
+
+    await blazorWasmJsLibInstance.waitBlazorWasmJsLibInit();
+    try {
+        await blazorWasmJsLibInstance.runLibMethod();
+        console.log("runLibMethod ok");
+        outputEl.innerText = "runLibMethod ok";
+    } catch (error) {
+        console.error("runLibMethod error", error);
+        outputEl.innerText = `runLibMethod error: ${error.message}`;
+    }
+})
+
+document.querySelector("#btn-getweather").addEventListener("click", async () => {
+    console.log("running getWeather");
+    outputEl.innerText = "running getWeather";
+
+    await blazorWasmJsLibInstance.waitBlazorWasmJsLibInit();
+    try {
+        const res = await blazorWasmJsLibInstance.getWeather();
+        console.log("getWeather res", res);
+        outputEl.innerText = JSON.stringify(res, null, 2);
+    } catch (error) {
+        console.error("getWeather error", error);
+        outputEl.innerText = `getWeather error: ${error.message}`;
+    }
+})
+
