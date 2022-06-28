@@ -1,12 +1,12 @@
 class BlazorWasmJsLib {
-  constructor() {
+  constructor(baseUrl) {
     if (BlazorWasmJsLib._isBlazorStarted !== null) {
       console.warn("Instância do BlazorWasmJsLib já criada.\nEssa nova instância não aplica configurações de inicialização.");
       return;
     }
 
     BlazorWasmJsLib._isBlazorStarted = false;
-    BlazorWasmJsLib._blazorStartedProm = BlazorWasmJsLib._startBlazor();
+    BlazorWasmJsLib._blazorStartedProm = BlazorWasmJsLib._startBlazor(baseUrl);
   }
 
   static _blazorStarted(dotNetHelper) {
@@ -14,21 +14,20 @@ class BlazorWasmJsLib {
     console.debug("%cBlazorWasmJsLib%c Definido DotNetHelper", "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;");
   }
 
-  static async _startBlazor() {
+  static async _startBlazor(baseUrl) {
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/startup?view=aspnetcore-6.0#load-boot-resources
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/configuration?view=aspnetcore-6.0
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/environments?view=aspnetcore-6.0#set-the-environment-via-startup-configuration
     console.debug(`%cBlazorWasmJsLib%c Iniciando...\n%cCarregando lib.`, "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;", "font-weight: normal;");
-
-    // https://docs.microsoft.com/pt-br/aspnet/core/blazor/javascript-interoperability/?view=aspnetcore-6.0#load-a-script-in-body-markup
-    await BlazorWasmJsLib._loadBlazorWebAssemblyScript("_framework/blazor.webassembly.js");
-
     console.debug("beforeStart");
     console.time("blazor start time");
-    if ("BLAZOR_WASM_JS_LIB_BASE_URL" in window) {
-      console.debug("BLAZOR_WASM_JS_LIB_BASE_URL:", window.BLAZOR_WASM_JS_LIB_BASE_URL);
+    if (typeof baseUrl === "string") {
+      console.debug("BLAZOR_WASM_JS_LIB baseUrl:", baseUrl);
+      // https://docs.microsoft.com/pt-br/aspnet/core/blazor/javascript-interoperability/?view=aspnetcore-6.0#load-a-script-in-body-markup
+      await BlazorWasmJsLib._loadBlazorWebAssemblyScript(`${baseUrl}/_framework/blazor.webassembly.js`);
     } else {
-      console.debug("BLAZOR_WASM_JS_LIB_BASE_URL não definida");
+      console.debug("BLAZOR_WASM_JS_LIB baseUrl não definida");
+      await BlazorWasmJsLib._loadBlazorWebAssemblyScript("_framework/blazor.webassembly.js");
     }
 
     await Blazor.start({
@@ -37,8 +36,8 @@ class BlazorWasmJsLib {
       // environment: "Production",
       loadBootResource: function (type, name, defaultUri, integrity) {
         console.debug(`Loading: '${type}', '${name}', '${defaultUri}'`);
-        if ("BLAZOR_WASM_JS_LIB_BASE_URL" in window) {
-          return `${window.BLAZOR_WASM_JS_LIB_BASE_URL}/_framework/${name}`;
+        if (typeof baseUrl === "string") {
+          return `${baseUrl}/_framework/${name}`;
         }
         return defaultUri;
       }
