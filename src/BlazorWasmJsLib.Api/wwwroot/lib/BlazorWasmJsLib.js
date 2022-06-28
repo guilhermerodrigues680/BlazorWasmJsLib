@@ -1,19 +1,24 @@
 class BlazorWasmJsLib {
-  _isBlazorStarted;
-  _dotNetHelper;
-  _blazorStartedProm;
-  _resolveBlazorStartedProm;
-
   constructor() {
-    console.debug(`%cBlazorWasmJsLib%c Iniciando...\n%cCarregando lib.`, "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;", "font-weight: normal;");
-    this._isBlazorStarted = false;
-    this._blazorStartedProm = new Promise(resolve => {
-      this._resolveBlazorStartedProm = resolve;
-    });
+    if (BlazorWasmJsLib._isBlazorStarted !== null) {
+      console.warn("Instância do BlazorWasmJsLib já criada.\nEssa nova instância não aplica configurações de inicialização.");
+      return;
+    }
 
+    BlazorWasmJsLib._isBlazorStarted = false;
+    BlazorWasmJsLib._blazorStartedProm = BlazorWasmJsLib._startBlazor();
+  }
+
+  static _blazorStarted(dotNetHelper) {
+    BlazorWasmJsLib._dotNetHelper = dotNetHelper;
+    console.debug("%cBlazorWasmJsLib%c Definido DotNetHelper", "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;");
+  }
+
+  static async _startBlazor() {
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/startup?view=aspnetcore-6.0#load-boot-resources
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/configuration?view=aspnetcore-6.0
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/environments?view=aspnetcore-6.0#set-the-environment-via-startup-configuration
+    console.debug(`%cBlazorWasmJsLib%c Iniciando...\n%cCarregando lib.`, "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;", "font-weight: normal;");
     console.debug("beforeStart");
     console.time("blazor start time");
     if ("BLAZOR_WASM_JS_LIB_BASE_URL" in window) {
@@ -22,7 +27,7 @@ class BlazorWasmJsLib {
       console.debug("BLAZOR_WASM_JS_LIB_BASE_URL não definida");
     }
 
-    Blazor.start({
+    await Blazor.start({
       // environment: "Staging",
       // environment: "Development", // window.location.hostname.includes("localhost")
       // environment: "Production",
@@ -34,61 +39,59 @@ class BlazorWasmJsLib {
         return defaultUri;
       }
     })
-      .then(() => {
-        console.timeEnd("blazor start time");
-        console.debug("afterStarted, blazor:", Blazor);
-      })
-  }
 
-  _blazorStarted(dotNetHelper) {
-    this._isBlazorStarted = true;
-    this._dotNetHelper = dotNetHelper;
-    this._resolveBlazorStartedProm();
+    console.timeEnd("blazor start time");
+    console.debug("afterStarted, blazor:", Blazor);
+    BlazorWasmJsLib._isBlazorStarted = true;
     console.debug("%cBlazorWasmJsLib%c Carregado", "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;");
   }
 
   async waitBlazorWasmJsLibInit() {
     console.debug("_blazorStartedProm iniciado");
-    await this._blazorStartedProm;
+    await BlazorWasmJsLib._blazorStartedProm;
     console.debug("_blazorStartedProm finalizado");
   }
 
   async runLibMethod() {
-    console.debug("runLibMethod", this._dotNetHelper);
-    const fAsyncRes = await this._dotNetHelper.invokeMethodAsync("MyDotnetFuncAsync")
+    console.debug("runLibMethod", BlazorWasmJsLib._dotNetHelper);
+    const fAsyncRes = await BlazorWasmJsLib._dotNetHelper.invokeMethodAsync("MyDotnetFuncAsync")
     console.log("fAsyncRes", fAsyncRes);
-    const fRes = this._dotNetHelper.invokeMethod("MyDotnetFunc2")
+    const fRes = BlazorWasmJsLib._dotNetHelper.invokeMethod("MyDotnetFunc2")
     console.log("fRes", fRes)
     console.debug("runLibMethod OK");
   }
 
   async getWeather() {
-    if (!this._isBlazorStarted) {
+    if (!BlazorWasmJsLib._isBlazorStarted) {
       throw new Error("blazor não iniciado");
     }
 
-    const res = await this._dotNetHelper.invokeMethodAsync("GetWeather");
+    const res = await BlazorWasmJsLib._dotNetHelper.invokeMethodAsync("GetWeather");
     console.log("res", res)
     return res;
   }
 
   async doDownloadImage() {
-    if (!this._isBlazorStarted) {
+    if (!BlazorWasmJsLib._isBlazorStarted) {
       throw new Error("blazor não iniciado");
     }
 
-    const res = await this._dotNetHelper.invokeMethodAsync("DoDownloadImage");
+    const res = await BlazorWasmJsLib._dotNetHelper.invokeMethodAsync("DoDownloadImage");
     console.log("res", res)
     return res;
   }
 }
 
+BlazorWasmJsLib._dotNetHelper = null;
+BlazorWasmJsLib._isBlazorStarted = null;
+BlazorWasmJsLib._blazorStartedProm = null;
+
 // Adiciona ela no window
-let blazorWasmJsLibInstance = new BlazorWasmJsLib();
-window.blazorWasmJsLibInstance = blazorWasmJsLibInstance;
-window.__BlazorWasmJsLibStarted = blazorWasmJsLibInstance._blazorStarted.bind(blazorWasmJsLibInstance);
+window.__BlazorWasmJsLibStarted = BlazorWasmJsLib._blazorStarted;
 
 console.debug("me", document.currentScript)
+
+// new BlazorWasmJsLib()
 
 // Exemplo
 // ; (async () => {
