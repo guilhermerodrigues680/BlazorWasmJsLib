@@ -1,6 +1,6 @@
 // using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using BlazorWasmJsLib.JsInterop;
+using BlazorWasmJsLib.Api;
 using BlazorWasmJsLib.Core;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

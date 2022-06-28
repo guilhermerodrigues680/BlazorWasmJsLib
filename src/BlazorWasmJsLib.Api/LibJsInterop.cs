@@ -1,8 +1,7 @@
 using BlazorWasmJsLib.Core;
-using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
-namespace BlazorWasmJsLib.JsInterop;
+namespace BlazorWasmJsLib.Api;
 
 // This class provides an example of how JavaScript functionality can be wrapped
 // in a .NET class for easy consumption. The associated JavaScript module is
