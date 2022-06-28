@@ -1,7 +1,7 @@
 // using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using ComponentLibrary.Api;
-using ComponentLibrary.Core;
+using BlazorWasmJsLib.JsInterop;
+using BlazorWasmJsLib.Core;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 // builder.RootComponents.Add<App>("#blazorwasmjslib-app");
@@ -19,7 +19,7 @@ Console.WriteLine("\tMySection={0}", builder.Configuration.GetSection("MySection
 // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/dependency-injection?view=aspnetcore-6.0#service-lifetime
 builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddSingleton<DemoService>();
-builder.Services.AddSingleton<ExampleJsInterop>();
+builder.Services.AddSingleton<LibJsInterop>();
 
 // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/logging?view=aspnetcore-6.0#configuration
 builder.Logging.SetMinimumLevel(LogLevel.Trace);
@@ -28,7 +28,7 @@ builder.Logging.SetMinimumLevel(LogLevel.Trace);
 
 var host = builder.Build();
 
-var weatherService = host.Services.GetRequiredService<ExampleJsInterop>();
+var weatherService = host.Services.GetRequiredService<LibJsInterop>();
 // await weatherService.Prompt("ola");
 
 await host.RunAsync();

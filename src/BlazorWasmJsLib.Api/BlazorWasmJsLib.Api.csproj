@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlazorWasmJsLib.Lib\BlazorWasmJsLib.Lib.csproj" />
-    <ProjectReference Include="..\ComponentLibrary\ComponentLibrary.csproj" />
+    <ProjectReference Include="..\BlazorWasmJsLib.Core\BlazorWasmJsLib.Core.csproj" />
+    <ProjectReference Include="..\BlazorWasmJsLib.JsInterop\BlazorWasmJsLib.JsInterop.csproj" />
   </ItemGroup>
 
 </Project>

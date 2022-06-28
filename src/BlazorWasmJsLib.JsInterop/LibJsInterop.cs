@@ -1,8 +1,8 @@
-using ComponentLibrary.Core;
+using BlazorWasmJsLib.Core;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
-namespace ComponentLibrary.Api;
+namespace BlazorWasmJsLib.JsInterop;
 
 // This class provides an example of how JavaScript functionality can be wrapped
 // in a .NET class for easy consumption. The associated JavaScript module is
@@ -11,19 +11,19 @@ namespace ComponentLibrary.Api;
 // This class can be registered as scoped DI service and then injected into Blazor
 // components for use.
 
-public class ExampleJsInterop : IAsyncDisposable
+public class LibJsInterop : IAsyncDisposable
 {
     private readonly IJSRuntime _jsRuntime;
     private readonly ILogger _logger;
     private readonly DemoService _service;
-    private readonly DotNetObjectReference<ExampleJsInterop>? _objRef;
+    private readonly DotNetObjectReference<LibJsInterop>? _objRef;
 
-    public ExampleJsInterop(IJSRuntime jsRuntime, DemoService service, ILogger<ExampleJsInterop> logger)
+    public LibJsInterop(IJSRuntime jsRuntime, DemoService service, ILogger<LibJsInterop> logger)
     {
         _jsRuntime = jsRuntime;
         _service = service;
         _logger = logger;
-        _logger.LogDebug("ExampleJsInterop Initialized");
+        _logger.LogDebug("LibJsInterop Initialized");
         _objRef = DotNetObjectReference.Create(this);
         CallJsRazorStarted();
     }
