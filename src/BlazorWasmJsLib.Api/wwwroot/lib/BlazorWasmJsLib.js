@@ -19,6 +19,10 @@ class BlazorWasmJsLib {
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/configuration?view=aspnetcore-6.0
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/environments?view=aspnetcore-6.0#set-the-environment-via-startup-configuration
     console.debug(`%cBlazorWasmJsLib%c Iniciando...\n%cCarregando lib.`, "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;", "font-weight: normal;");
+
+    // https://docs.microsoft.com/pt-br/aspnet/core/blazor/javascript-interoperability/?view=aspnetcore-6.0#load-a-script-in-body-markup
+    await BlazorWasmJsLib._loadBlazorWebAssemblyScript("_framework/blazor.webassembly.js");
+
     console.debug("beforeStart");
     console.time("blazor start time");
     if ("BLAZOR_WASM_JS_LIB_BASE_URL" in window) {
@@ -44,6 +48,27 @@ class BlazorWasmJsLib {
     console.debug("afterStarted, blazor:", Blazor);
     BlazorWasmJsLib._isBlazorStarted = true;
     console.debug("%cBlazorWasmJsLib%c Carregado", "background: navy; color: white; padding: 1px 3px; border-radius: 3px;", "font-weight: bold;");
+  }
+
+  static _loadBlazorWebAssemblyScript(src) {
+    return new Promise((resolve, reject) => {
+      let r = false;
+      const s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = src;
+      s.setAttribute("autostart", false);
+      s.onerror = reject;
+      s.onload = s.onreadystatechange = function () {
+        console.log(this.readyState); //uncomment this line to see which ready states are called.
+        if (!r && (!this.readyState || this.readyState == 'complete')) {
+          r = true;
+          resolve();
+        }
+      };
+
+      const t = document.getElementsByTagName('script')[0];
+      t.parentNode.insertBefore(s, t);
+    })
   }
 
   async waitBlazorWasmJsLibInit() {
