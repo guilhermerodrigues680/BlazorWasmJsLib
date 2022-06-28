@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
+using Microsoft.Extensions.Logging;
 
-namespace BlazorWasmJsLib.Core;
+namespace ComponentLibrary.Core;
 
 public class DemoService
 {

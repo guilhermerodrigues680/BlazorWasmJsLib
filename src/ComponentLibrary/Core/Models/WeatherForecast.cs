@@ -1,4 +1,4 @@
-namespace BlazorWasmJsLib.Core;
+namespace ComponentLibrary.Core;
 
 public class WeatherForecast
 {
