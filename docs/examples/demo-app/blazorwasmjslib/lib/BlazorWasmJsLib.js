@@ -16,15 +16,22 @@ class BlazorWasmJsLib {
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/environments?view=aspnetcore-6.0#set-the-environment-via-startup-configuration
     console.debug("beforeStart");
     console.time("blazor start time");
+    if ("BLAZOR_WASM_JS_LIB_BASE_URL" in window) {
+      console.debug("BLAZOR_WASM_JS_LIB_BASE_URL:", window.BLAZOR_WASM_JS_LIB_BASE_URL);
+    } else {
+      console.debug("BLAZOR_WASM_JS_LIB_BASE_URL não definida");
+    }
+
     Blazor.start({
       // environment: "Staging",
       // environment: "Development", // window.location.hostname.includes("localhost")
       // environment: "Production",
       loadBootResource: function (type, name, defaultUri, integrity) {
         console.debug(`Loading: '${type}', '${name}', '${defaultUri}'`);
-        return `blazorwasmjslib/_framework/${name}`;
-        // return `blib/_framework/${name}`;
-        // return defaultUri;
+        if ("BLAZOR_WASM_JS_LIB_BASE_URL" in window) {
+          return `${window.BLAZOR_WASM_JS_LIB_BASE_URL}/_framework/${name}`;
+        }
+        return defaultUri;
       }
     })
       .then(() => {
