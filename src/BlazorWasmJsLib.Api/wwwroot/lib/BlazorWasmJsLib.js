@@ -15,16 +15,21 @@ class BlazorWasmJsLib {
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/configuration?view=aspnetcore-6.0
     // https://docs.microsoft.com/pt-br/aspnet/core/blazor/fundamentals/environments?view=aspnetcore-6.0#set-the-environment-via-startup-configuration
     console.debug("beforeStart");
+    console.time("blazor start time");
     Blazor.start({
       // environment: "Staging",
       // environment: "Development", // window.location.hostname.includes("localhost")
       // environment: "Production",
-      // loadBootResource: function (type, name, defaultUri, integrity) {
-      //   console.debug(`Loading: '${type}', '${name}', '${defaultUri}'`);
-      //   return `blib/_framework/${name}`;
-      // }
+      loadBootResource: function (type, name, defaultUri, integrity) {
+        console.debug(`Loading: '${type}', '${name}', '${defaultUri}'`);
+        // return `blib/_framework/${name}`;
+        return defaultUri;
+      }
     })
-      .then(() => console.debug("afterStarted, blazor:", Blazor))
+      .then(() => {
+        console.timeEnd("blazor start time");
+        console.debug("afterStarted, blazor:", Blazor);
+      })
   }
 
   _blazorStarted(dotNetHelper) {
