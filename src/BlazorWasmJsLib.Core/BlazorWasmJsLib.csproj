@@ -14,4 +14,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorWasmJsLib.Lib\BlazorWasmJsLib.Lib.csproj" />
+  </ItemGroup>
+
 </Project>
