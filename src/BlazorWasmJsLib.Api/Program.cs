@@ -33,6 +33,7 @@ builder.Logging.SetMinimumLevel(LogLevel.Trace);
 // builder.Logging.AddFilter("Microsoft.AspNetCore.Components.RenderTree.*", LogLevel.None);
 // builder.Logging.AddFilter("Microsoft.AspNetCore.Components.Routing.Router", LogLevel.None);
 builder.Logging.AddFilter("System.Net.Http.HttpClient.Refit.*", LogLevel.None);
+builder.Logging.AddFilter("Microsoft.Extensions.Http.DefaultHttpClientFactory", LogLevel.Information);
 
 var host = builder.Build();
 
